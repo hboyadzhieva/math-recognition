@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui
-from PyQt5.QtWidgets import QWidget, QPushButton, QPlainTextEdit
+from PyQt5.QtWidgets import QWidget, QPushButton, QPlainTextEdit, QLabel
 
 
 class UiMainWindow(object):

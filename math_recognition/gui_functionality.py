@@ -1,4 +1,4 @@
-from math_recognition import gui_layout
+from math_recognition import gui_layout, make_expression
 from PyQt5.QtCore import QObject, Qt, pyqtSignal, QPoint, QSize, QRect
 from PyQt5.QtWidgets import QWidget, QMainWindow
 from PyQt5.QtGui import QImage, QPainter, QPen
@@ -30,6 +30,10 @@ class WindowGUI(QMainWindow, gui_layout.UiMainWindow):
 
     def imageReady(self):
         self.symbols_window.clear()
+        symbols, exp = make_expression.prepare_from_path('img.png')
+        self.expression = exp
+        for symbol in symbols:
+            self.symbols_window.insertPlainText(symbol.label[0] + ' ')
 
     def displayExpression(self):
         self.result_window.insertPlainText(self.expression + "\n")
@@ -41,7 +45,6 @@ class DrawingArea(QWidget, QObject):
 
     def __init__(self, parent=None):
         super(DrawingArea, self).__init__()
-        self.setAttribute(Qt.WA_StaticContents)
         self.modified = False
         self.drawing = False
         self.myPenWidth = 1
@@ -50,9 +53,8 @@ class DrawingArea(QWidget, QObject):
         self.lastPoint = QPoint()
 
     def saveImage(self, filename, fileformat):
-        visibleImage = self.image
-
-        if visibleImage.save(filename, fileformat):
+        visible_image = self.image
+        if visible_image.save(filename, fileformat):
             self.modified = False
             return True
         else:
@@ -65,28 +67,26 @@ class DrawingArea(QWidget, QObject):
 
     def resizeEvent(self, event):
         if self.width() > self.image.width() or self.height() > self.image.height():
-            newWidth = max(self.width() + 0, self.image.width())
-            newHeight = max(self.height() + 0, self.image.height())
-            self.resizeImage(self.image, QSize(newWidth, newHeight))
+            new_width = max(self.width() + 0, self.image.width())
+            new_height = max(self.height() + 0, self.image.height())
+            self.resizeImage(self.image, QSize(new_width, new_height))
             self.update()
 
         super(DrawingArea, self).resizeEvent(event)
-        print("resize event")
 
     def resizeImage(self, image, newSize):
         if image.size() == newSize:
             return
 
-        newImage = QImage(newSize, QImage.Format_RGB32)
-        newImage.fill(Qt.white)
-        painter = QPainter(newImage)
+        new_image = QImage(newSize, QImage.Format_RGB32)
+        new_image.fill(Qt.white)
+        painter = QPainter(new_image)
         painter.drawImage(QPoint(0, 0), image)
-        self.image = newImage
+        self.image = new_image
 
     def submitImage(self):
-        visibleImage = self.image
-        visibleImage.save('img.png', 'PNG')
-
+        visible_image = self.image
+        visible_image.save('img.png', 'PNG')
         self.trigger.emit()
 
     def setPenColor(self, newColor):
@@ -114,8 +114,8 @@ class DrawingArea(QWidget, QObject):
 
     def paintEvent(self, event):
         painter = QPainter(self)
-        dirtyRect = event.rect()
-        painter.drawImage(dirtyRect, self.image, dirtyRect)
+        dirty_rect = event.rect()
+        painter.drawImage(dirty_rect, self.image, dirty_rect)
 
     def drawLineTo(self, endPoint):
         painter = QPainter(self.image)
@@ -138,8 +138,8 @@ class DrawingArea(QWidget, QObject):
     def print_(self):
         printer = QPrinter(QPrinter.HighResolution)
 
-        printDialog = QPrintDialog(printer, self)
-        if printDialog.exec_() == QPrintDialog.Accepted:
+        print_dialog = QPrintDialog(printer, self)
+        if print_dialog.exec_() == QPrintDialog.Accepted:
             painter = QPainter(printer)
             rect = painter.viewport()
             size = self.image.size()

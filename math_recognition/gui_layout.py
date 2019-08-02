@@ -100,9 +100,9 @@ class UiMainWindow(object):
 
         # icons for buttons -----------------------------
         penIcon = QtGui.QIcon()
-        penIcon.addPixmap(QtGui.QPixmap('images/pen.png'))
+        penIcon.addPixmap(QtGui.QPixmap('icons/pen.png'))
         eraseIcon = QtGui.QIcon()
-        eraseIcon.addPixmap(QtGui.QPixmap('images/eraser.png'))
+        eraseIcon.addPixmap(QtGui.QPixmap('icons/eraser.png'))
 
         # button pen -----------------------------
         self.button_pen = QPushButton('', MainWindow)

@@ -1,8 +1,17 @@
 import numpy as np
 import math
+from PIL import Image
 
 
 def im_grayscale_to_bw(img):
+    threshold = 240
+    img_binary = img.point(lambda p: p > threshold and 255)
+    img_arr_binary = np.array(img_binary)
+    return img_arr_binary
+
+
+def grayscale_to_bw(img_path):
+    img = Image.open(img_path)
     threshold = 240
     img_binary = img.point(lambda p: p > threshold and 255)
     img_arr_binary = np.array(img_binary)
@@ -23,6 +32,10 @@ def bw_to_binary(img):
 
 def im_grayscale_to_binary(img):
     img = im_grayscale_to_bw(img)
+    return bw_to_binary(img)
+
+def grayscale_to_binary(img_path):
+    img = grayscale_to_bw(img_path)
     return bw_to_binary(img)
 
 def binary_to_bw(img):

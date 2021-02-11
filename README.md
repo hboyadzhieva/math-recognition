@@ -1,5 +1,7 @@
 # math-recognition
 
+*The project is created at school for learning purposes*
+
 ## Getting Started
 ### Prerequisites
  External Libraries needed:
@@ -9,7 +11,7 @@
   - skimage
   
 ### How to Start
-***---Note!--- The project creates and deletes png files on the file system in the current project directory***
+***Note! The project creates and deletes png files on the file system in the current project directory***
 1. Clone project and make sure to keep directory structure (*./data/segmented* will be used by the project)
 2. Install needed external libraries
 3. Run main.py
@@ -46,4 +48,4 @@ For feature set, after testing with image moments, pixel values, hu moments, the
 
 After loading the images, test feature set and train feature set, the classifier was tested and dumped in a pkl file. This pkl file **classifier_DecisionTree.pkl** is then loaded by the main program and used to predict the values of the drawn images. 
 
-***---Note!---The files in subdirectory classifier_build are just for reference of how the classifier was created. The train and test data is not uploaded in this repository.***
+***Note! The files in subdirectory classifier_build are just for reference of how the classifier was created. The train and test data is not uploaded in this repository.***
